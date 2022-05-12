@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mx.gob.imss</groupId>
-	<artifactId>busquedanss</artifactId>
+	<artifactId>mts-pacientes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>busquedanss</name>
+	<name>mts-pacientes</name>
 	<description>Aplicacion para buscar pacientes inscritos al imss mediante el Numero de Seguridad Social</description>
 
 	<properties>
