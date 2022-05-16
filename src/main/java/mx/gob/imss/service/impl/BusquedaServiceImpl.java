@@ -1,11 +1,11 @@
 package mx.gob.imss.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.gob.imss.components.WsCliente;
 import mx.gob.imss.constantes.BusquedaConstantes;
 import mx.gob.imss.model.BeneficiarioNss;
 import mx.gob.imss.model.BusquedaNss;
 import mx.gob.imss.service.BusquedaService;
-import lombok.extern.slf4j.Slf4j;
 import mx.gob.imss.vigenciaderechos.InfoAseguradoVO;
 import mx.gob.imss.vigenciaderechos.Return;
 import org.json.JSONObject;
@@ -46,7 +46,7 @@ public class BusquedaServiceImpl implements BusquedaService {
 
             BeneficiarioNss beneficiarioNss = new BeneficiarioNss();
             beneficiarioNss.setNss(ret.getNss().getValue());
-            beneficiarioNss.setPaciente(ret.getNombre().getValue() + " " + ret.getPaterno().getValue() + " " + ret.getMaterno().getValue());
+            beneficiarioNss.setPaciente(upperCaseFirst(ret.getNombre().getValue().toLowerCase() + " " + ret.getPaterno().getValue().toLowerCase() + " " + ret.getMaterno().getValue().toLowerCase()));
             beneficiarioNss.setParentesco(BusquedaConstantes.TITULAR);
             beneficiarioNss.setAgregadoMedico(ret.getAgregadoMedico().getValue());
             beneficiarioNss.setUnidadMedica(ret.getDhUMF().getValue());
@@ -63,7 +63,7 @@ public class BusquedaServiceImpl implements BusquedaService {
 
                 beneficiarioNss = new BeneficiarioNss();
                 beneficiarioNss.setNss(infoAseguradoVO.getNss().getValue());
-                beneficiarioNss.setPaciente(infoAseguradoVO.getNombre().getValue() + " " + infoAseguradoVO.getPaterno().getValue() + " " + infoAseguradoVO.getMaterno().getValue());
+                beneficiarioNss.setPaciente(upperCaseFirst(infoAseguradoVO.getNombre().getValue().toLowerCase() + " " + infoAseguradoVO.getPaterno().getValue().toLowerCase() + " " + infoAseguradoVO.getMaterno().getValue().toLowerCase()));
                 beneficiarioNss.setParentesco(BusquedaConstantes.BENEFICIARIO);
                 beneficiarioNss.setAgregadoMedico(infoAseguradoVO.getAgregadoMedico().getValue());
                 beneficiarioNss.setUnidadMedica(infoAseguradoVO.getDhUMF().getValue());
@@ -83,7 +83,7 @@ public class BusquedaServiceImpl implements BusquedaService {
 
         }
 
-        return new BusquedaNss(beneficiarios);
+        return new BusquedaNss(beneficiarios, beneficiarios.size());
 
     }
 
@@ -94,6 +94,12 @@ public class BusquedaServiceImpl implements BusquedaService {
 
         return jaxbObjectToJSON(ret);
 
+    }
+
+    private String upperCaseFirst(String val) {
+        char[] arr = val.toCharArray();
+        arr[0] = Character.toUpperCase(arr[0]);
+        return new String(arr);
     }
 
     private int calculaEdad(String fechaNacimiento) {

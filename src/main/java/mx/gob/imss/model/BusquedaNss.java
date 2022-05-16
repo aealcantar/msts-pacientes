@@ -16,6 +16,9 @@ public class BusquedaNss {
 
     @JsonProperty(value = "beneficiarios")
     private List<BeneficiarioNss> beneficiarioNssList;
+    @JsonProperty
+    private int registrosTotal;
+
 
 
 }
