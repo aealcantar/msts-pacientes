@@ -18,10 +18,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,7 +54,7 @@ public class BusquedaServiceImpl implements BusquedaService {
             beneficiarioNss.setAgregadoMedico(ret.getAgregadoMedico().getValue());
             beneficiarioNss.setUnidadMedica(ret.getDhUMF().getValue());
             beneficiarioNss.setCurp(ret.getCurp().getValue());
-            beneficiarioNss.setFechaNacimiento(ret.getFechaNacimiento().getValue());
+            beneficiarioNss.setFechaNacimiento(dateImssFormat(ret.getFechaNacimiento().getValue()));
             beneficiarioNss.setTurno(ret.getTurno().getValue());
             beneficiarioNss.setConsultorio(ret.getConsultorio().getValue());
             beneficiarioNss.setEdad(calculaEdad(ret.getFechaNacimiento().getValue()));
@@ -68,7 +71,7 @@ public class BusquedaServiceImpl implements BusquedaService {
                 beneficiarioNss.setAgregadoMedico(infoAseguradoVO.getAgregadoMedico().getValue());
                 beneficiarioNss.setUnidadMedica(infoAseguradoVO.getDhUMF().getValue());
                 beneficiarioNss.setCurp(infoAseguradoVO.getCurp().getValue());
-                beneficiarioNss.setFechaNacimiento(infoAseguradoVO.getFechaNacimiento().getValue());
+                beneficiarioNss.setFechaNacimiento(dateImssFormat(infoAseguradoVO.getFechaNacimiento().getValue()));
                 beneficiarioNss.setTurno(infoAseguradoVO.getTurno().getValue());
                 beneficiarioNss.setConsultorio(infoAseguradoVO.getConsultorio().getValue());
                 beneficiarioNss.setEdad(calculaEdad(infoAseguradoVO.getFechaNacimiento().getValue()));
@@ -93,6 +96,23 @@ public class BusquedaServiceImpl implements BusquedaService {
         Return ret = wsCliente.consultaNss(nss);
 
         return jaxbObjectToJSON(ret);
+
+    }
+
+    private String dateImssFormat(String date) {
+        try {
+
+            String[] fechaPartes = date.split("/");
+
+            return fechaPartes[2] + "/" + fechaPartes[1] + "/" + fechaPartes[0];
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return date;
+
+        }
 
     }
 
